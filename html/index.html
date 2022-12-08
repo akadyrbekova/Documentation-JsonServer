@@ -1,17 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="container-nav">
+        <a href="" class="acont">Makers Students</a>
+      </div>
+    </div>
 
+    <div class="contact">
+      <button class="newcont">Date</button>
+    </div>
 
-    
-    <script src="../js/main.js" ></script>
-</body>
+    <div class="inputs">
+      <div class="active">
+        <input id="name" placeholder="Name" />
+        <input id="surname" placeholder="Surname" />
+        <input id="number" placeholder="996 000 00 00 00*" />
+        <input id="photo" placeholder="Your photo URL" />
+        <button id="create">Create</button>
+      </div>
+    </div>
+
+    <div id="list"></div>
+
+    <div id="modal-edit">
+      <div id="modal-edit-body">
+        <button id="modal-edit-close">X</button>
+        <span id="change">Changes</span>
+        <div id="modal-edit-inps">
+          <input type="text" id="inp-edit-name" />
+          <input type="text" id="inp-edit-surname" />
+          <input type="text" id="inp-edit-num" />
+          <input type="text" id="inp-edit-photo" />
+        </div>
+        <button id="btn-save-edit">Save</button>
+      </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+  </body>
 </html>

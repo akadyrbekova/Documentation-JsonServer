@@ -1,0 +1,174 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  background-color: rgb(211, 223, 255);
+}
+.navbar {
+  background-color: rgb(107, 140, 231);
+  height: 10vh;
+}
+.acont {
+  font-size: 2em;
+  text-decoration: none;
+  color: white;
+  margin: 20px;
+}
+.search {
+  width: 13%;
+  height: 5vh;
+  margin: 15px;
+  border: 2px solid rgb(0, 68, 255);
+  border-radius: 5px;
+}
+.container-nav {
+  display: flex;
+  justify-content: space-around;
+}
+
+.twobtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vw;
+}
+.li {
+  list-style-type: none;
+}
+#list {
+  width: 50%;
+  margin-left: 36%;
+  border: 3px solid rgb(0, 68, 255);
+  margin-top: -15vw;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+.contact {
+  margin-top: 5%;
+  margin-left: 15%;
+}
+.newcont {
+  background-color: rgb(107, 140, 231);
+  color: white;
+  width: 10vw;
+  height: 5vh;
+  font-size: 1.5em;
+  border-color: rgb(0, 68, 255);
+}
+.inputs {
+  border: 4px solid rgb(0, 68, 255);
+  border-radius: 5px;
+  width: 20vw;
+  margin-left: 10%;
+  margin-top: 2vh;
+}
+.active {
+  display: flex;
+  flex-direction: column;
+}
+.active input {
+  border-color: rgb(0, 68, 255);
+  margin-left: 20%;
+  margin-top: 3%;
+  width: 60%;
+  height: 3em;
+  margin-bottom: 2vh;
+  overflow: hidden;
+}
+#create {
+  background-color: rgb(107, 140, 231);
+  width: 7vw;
+  height: 5vh;
+  font-size: 1.5em;
+  margin-left: 31%;
+  margin-bottom: 7px;
+  border-color: rgb(0, 68, 255);
+  color: white;
+}
+
+#modal-edit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+#modal-edit-body {
+  background-color: rgb(194, 205, 238);
+  width: 500px;
+  height: 400px;
+}
+#inp-edit-id {
+  display: none;
+}
+#modal-edit-close {
+  background-color: rgb(107, 140, 231);
+  border-color: rgb(0, 68, 255);
+  color: white;
+  font-size: 1em;
+  margin-left: 89%;
+  width: 55px;
+  height: 5vh;
+}
+#change {
+  margin-left: 39%;
+  font-size: 2em;
+  color: black;
+}
+#inp-edit-name {
+  border-color: rgb(0, 68, 255);
+  margin-left: 20%;
+  margin-top: 3%;
+  width: 60%;
+  height: 3em;
+  margin-bottom: 2vh;
+  overflow: hidden;
+}
+#inp-edit-surname {
+  border-color: rgb(0, 68, 255);
+  margin-left: 20%;
+  margin-top: 3%;
+  width: 60%;
+  height: 3em;
+  margin-bottom: 2vh;
+  overflow: hidden;
+}
+#inp-edit-num {
+  border-color: rgb(0, 68, 255);
+  margin-left: 20%;
+  margin-top: 3%;
+  width: 60%;
+  height: 3em;
+  margin-bottom: 2vh;
+  overflow: hidden;
+}
+#inp-edit-photo {
+  border-color: rgb(0, 68, 255);
+  margin-left: 20%;
+  margin-top: 3%;
+  width: 60%;
+  height: 3em;
+  margin-bottom: 2vh;
+  overflow: hidden;
+}
+#btn-save-edit {
+  margin-left: 40%;
+  width: 6vw;
+  height: 5vh;
+  border: 2px solid black;
+  background-color: red;
+  color: white;
+  font-size: 26px;
+}
+#btn-delete {
+  width: 10vw;
+}
