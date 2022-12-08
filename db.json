@@ -1,3 +1,14 @@
 {
-  "data": []
+  "data": [
+    {
+      "email": "test",
+      "password": "test",
+      "id": 1
+    },
+    {
+      "email": "test",
+      "password": "test",
+      "id": 2
+    }
+  ]
 }
