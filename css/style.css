@@ -1,174 +1,247 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"); */
+
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
-}
-body {
-  background-color: rgb(211, 223, 255);
-}
-.navbar {
-  background-color: rgb(107, 140, 231);
-  height: 10vh;
-}
-.acont {
-  font-size: 2em;
-  text-decoration: none;
-  color: white;
-  margin: 20px;
-}
-.search {
-  width: 13%;
-  height: 5vh;
-  margin: 15px;
-  border: 2px solid rgb(0, 68, 255);
-  border-radius: 5px;
-}
-.container-nav {
-  display: flex;
-  justify-content: space-around;
+  padding: 0;
+  margin: 0;
 }
 
-.twobtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2vw;
+body {
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
 }
-.li {
-  list-style-type: none;
-}
-#list {
-  width: 50%;
-  margin-left: 36%;
-  border: 3px solid rgb(0, 68, 255);
-  margin-top: -15vw;
-}
-a {
-  text-decoration: none;
-  color: white;
-}
-.contact {
-  margin-top: 5%;
-  margin-left: 15%;
-}
-.newcont {
-  background-color: rgb(107, 140, 231);
-  color: white;
-  width: 10vw;
-  height: 5vh;
-  font-size: 1.5em;
-  border-color: rgb(0, 68, 255);
-}
-.inputs {
-  border: 4px solid rgb(0, 68, 255);
+
+.main-container {
+  margin: 0px auto;
+  padding: 25px;
   border-radius: 5px;
-  width: 20vw;
-  margin-left: 10%;
-  margin-top: 2vh;
 }
-.active {
+
+.record-input,
+.record-display {
+  border-radius: 10px;
+  padding: 20px 0;
+  margin: 30px 0;
+  box-shadow: 0px 0px 0px 0px rgba(8, 0, 8, 1);
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(8, 0, 8, 1);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(8, 0, 8, 1);
+}
+
+.record-input > h2,
+.record-display > h2 {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 22px;
+}
+
+.record-input {
+  color: #000;
+  background-color: #f0f0f0;
+}
+
+.record-display {
+  background-color: #e52165;
+  color: #fff;
+  position: relative;
+}
+
+/*! record input */
+
+.entry-form {
+  padding: 30px 0;
+}
+
+form {
   display: flex;
   flex-direction: column;
-}
-.active input {
-  border-color: rgb(0, 68, 255);
-  margin-left: 20%;
-  margin-top: 3%;
-  width: 60%;
-  height: 3em;
-  margin-bottom: 2vh;
-  overflow: hidden;
-}
-#create {
-  background-color: rgb(107, 140, 231);
-  width: 7vw;
-  height: 5vh;
-  font-size: 1.5em;
-  margin-left: 31%;
-  margin-bottom: 7px;
-  border-color: rgb(0, 68, 255);
-  color: white;
+  width: 75%;
+  margin: 0 auto;
 }
 
-#modal-edit {
+form label {
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+form label,
+form input {
+  display: block;
+  outline: none;
+  border-radius: 25px;
+  border: none;
+}
+
+form input[type="text"],
+form input[type="number"] {
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  padding: 10px 18px;
+  margin: 12px 0;
+}
+
+form input:focus {
+  background-color: #252525;
+  color: #fff;
+}
+
+.message {
+  text-align: center;
+  display: block;
+  width: 50%;
+  margin: 10px auto;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 0;
+  visibility: hidden;
+}
+
+/*! alerts styles  */
+
+.error {
+  background-color: #f32013;
+  visibility: visible;
+}
+
+.success {
+  background-color: #4bb543;
+  visibility: visible !important;
+}
+
+/*******************************/
+
+input-btns {
+  text-align: center;
+}
+
+/*! button styling  */
+
+button {
+  display: block;
+  width: 160px;
+  margin: 20px auto;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 10px;
+  border: 3px solid #fff;
+  border-radius: 25px;
+  color: #fff;
+  background-color: #000411;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.5s ease;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+#submit-btn span,
+#cancel-btn span {
+  padding-right: 5px;
+}
+
+#reset-btn {
   position: absolute;
-  top: 0;
+  right: 25px;
+  top: 10px;
+  width: 120px;
+}
+
+/***************************/
+
+.record-display {
+  padding: 30px 40px;
+}
+
+.record-el {
+  display: block;
+  padding: 4px 0;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.labelling {
+  font-weight: 700;
+}
+
+.record-item {
+  color: #000;
+  border-radius: 10px;
+  padding: 10px 25px;
+  margin: 15px 0;
+  background-color: #fff;
+  box-shadow: 0 0 6px #777;
+}
+
+#delete-btn span {
+  padding-right: 5px;
+}
+
+/********************************/
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 90vw;
+  grid-column-gap: 30px;
+}
+
+.record-input {
+  height: 700px;
+}
+
+.record-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+}
+
+/*! main modal  */
+
+.main-modal {
+  position: absolute;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  top: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: none;
-  justify-content: center;
-  align-items: center;
 }
-#modal-edit-body {
-  background-color: rgb(194, 205, 238);
+
+.inner-modal {
   width: 500px;
-  height: 400px;
+  height: 200px;
+  background-color: #e52165;
+  margin: auto;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 0px rgba(8, 0, 8, 1);
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(8, 0, 8, 1);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(8, 0, 8, 1);
 }
-#inp-edit-id {
-  display: none;
+
+.inp-edit {
+  color: #000;
+  background-color: #f0f0f0;
+  outline: none;
+  border-radius: 25px;
+  border: none;
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  padding: 8px 24px;
+  margin: 0px 0;
 }
-#modal-edit-close {
-  background-color: rgb(107, 140, 231);
-  border-color: rgb(0, 68, 255);
-  color: white;
-  font-size: 1em;
-  margin-left: 89%;
-  width: 55px;
-  height: 5vh;
+
+.close {
+  padding: 5px;
+  width: 44px;
+  margin-left: 90%;
 }
-#change {
-  margin-left: 39%;
-  font-size: 2em;
-  color: black;
-}
-#inp-edit-name {
-  border-color: rgb(0, 68, 255);
-  margin-left: 20%;
-  margin-top: 3%;
-  width: 60%;
-  height: 3em;
-  margin-bottom: 2vh;
-  overflow: hidden;
-}
-#inp-edit-surname {
-  border-color: rgb(0, 68, 255);
-  margin-left: 20%;
-  margin-top: 3%;
-  width: 60%;
-  height: 3em;
-  margin-bottom: 2vh;
-  overflow: hidden;
-}
-#inp-edit-num {
-  border-color: rgb(0, 68, 255);
-  margin-left: 20%;
-  margin-top: 3%;
-  width: 60%;
-  height: 3em;
-  margin-bottom: 2vh;
-  overflow: hidden;
-}
-#inp-edit-photo {
-  border-color: rgb(0, 68, 255);
-  margin-left: 20%;
-  margin-top: 3%;
-  width: 60%;
-  height: 3em;
-  margin-bottom: 2vh;
-  overflow: hidden;
-}
-#btn-save-edit {
-  margin-left: 40%;
-  width: 6vw;
-  height: 5vh;
-  border: 2px solid black;
-  background-color: red;
-  color: white;
-  font-size: 26px;
-}
-#btn-delete {
-  width: 10vw;
+
+.fa-times-circle::before {
+  padding: 5%;
 }

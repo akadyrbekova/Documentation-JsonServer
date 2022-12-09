@@ -1,123 +1,246 @@
-const API = "  http://localhost:8001/data";
-let contactbook = document.querySelector(".acont");
-let search = document.querySelector(".search");
-let btnNewContact = document.querySelector(".newcont");
-let name = document.querySelector("#name");
-let surname = document.querySelector("#surname");
-let num = document.querySelector("#number");
-let photo = document.querySelector("#photo");
-let btnCreate = document.querySelector("#create");
+let addBtn = document.getElementById("submit-btn");
+let cancelBtn = document.getElementById("cancel-btn");
+let resetBtn = document.getElementById("reset-btn");
+let editBtn = document.getElementById("edit-btn");
+let deleteBtn = document.getElementById("delete-btn");
+let recordContainer = document.querySelector(".record-container");
+let mainModal = document.querySelector(".main-modal");
+let inpEdit = document.querySelector(".inp-edit");
+let btnSave = document.querySelector(".btn-save");
+let btnClose = document.querySelector(".btn-close");
+//! inputs
 
-// !Create
+let name = document.getElementById("name");
+let treaty = document.getElementById("treaty");
+let number = document.getElementById("contact-num");
+let amount = document.getElementById("amount");
 
-btnCreate.addEventListener("click", () => {
-  let newPerson = {
-    name: name.value,
-    surname: surname.value,
-    num: num.value,
-    photo: photo.value,
-  };
-  console.log(newPerson);
-  if (
-    newPerson.name.trim() === "" ||
-    newPerson.surname.trim() === "" ||
-    newPerson.num.trim() === "" ||
-    newPerson.photo.trim() === ""
-  ) {
-    alert("Заполните все поля!");
-    return;
+let ContactArray = [];
+let id = 0;
+
+//! constructor for contact
+
+function Contact(name, treaty, number, amount) {
+  this.name = name;
+  this.treaty = treaty;
+  this.number = number;
+  this.amount = amount;
+}
+
+//! display record
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (localStorage.getItem("contacts") == null) {
+    ContactArray = [];
+  } else {
+    ContactArray = JSON.parse(localStorage.getItem("contacts"));
+    lastID(ContactArray);
   }
-  fetch(API, {
-    method: "POST",
-    body: JSON.stringify(newPerson),
-    headers: {
-      "Content-type": "application/json; charset=utf-8",
-    },
-  });
-
-  name.value = "";
-  surname.value = "";
-  num.value = "";
-  photo.value = "";
-  getPerson();
+  displayRecord();
 });
-getPerson();
 
-let list = document.querySelector("#list");
+function lastID(ContactArray) {
+  if (ContactArray.length > 0) {
+    id = ContactArray[ContactArray.length - 1].id;
+  } else {
+    id = 0;
+  }
+}
 
-async function getPerson() {
-  let response = await fetch(API).then((response) => response.json());
+//! Display function
 
-  list.innerHTML = "";
-  response.forEach((item) => {
-    let newElem = document.createElement("div");
-    newElem.id = item.id;
-    newElem.innerHTML += `<p>Name: ${item.name}</p>
-    <p> Surname: ${item.surname}</p>
-    <p> Number: ${item.num}</p>
-    <p> Your photo: <img src="${item.photo}"></img></p>
-    <button class='btn-delete' id='${item.id}'>Delete</button>
-    <button class="btn-edit" id='${item.id}'>Edit</button>
-    `;
-    newElem.style.fontSize = "20px";
-    newElem.style.marginTop = "5px";
-    newElem.style.marginBottom = "5px";
-    list.append(newElem);
+function displayRecord() {
+  ContactArray.forEach(function (singleContact) {
+    addToList(singleContact);
   });
 }
 
-// !! delete
-document.addEventListener("click", async (e) => {
-  if (e.target.className === "btn-delete") {
-    fetch(`${API}/${e.target.id}`, {
-      method: "DELETE",
-    });
-    getPerson();
-  } else if (e.target.className === "btn-edit") {
-    modalEdit.style.display = "flex";
-    let id = e.target.id;
-    let response = await fetch(`${API}/${id}`)
-      .then((response) => response.json())
-      .catch((err) => console.log(err));
-    //   console.log(response)
-    inpEditname.value = response.name;
-    inpEditSurname.value = response.surname;
-    inpEditNum.value = response.num;
-    inpEditPhoto.value = response.photo;
+//! Finding the last id
 
-    inpEditname.className = response.id;
+//! add contact record
+
+addBtn.addEventListener("click", function () {
+  if (
+    [
+      !name.value.trim() ||
+        !treaty.value.trim() ||
+        !number.value.trim() ||
+        !amount.value.trim,
+    ]
+  ) {
+    setMessage("success", "Record added successfully!");
+    id++;
+    const contact = new Contact(
+      id,
+      name.value,
+      treaty.value,
+      number.value,
+      amount.value
+    );
+    ContactArray.push(contact);
+
+    addToList(contact);
+  } else {
+    setMessage("error", "Empty input fields or invalid input!");
   }
 });
 
-// ! update - изменения
-let modalEdit = document.getElementById("modal-edit");
-let modalEditClose = document.getElementById("modal-edit-close");
-let btnSaveEdit = document.getElementById("btn-save-edit");
+//! Add to list
 
-let inpEditname = document.getElementById("inp-edit-name");
-let inpEditSurname = document.getElementById("inp-edit-surname");
-let inpEditNum = document.getElementById("inp-edit-num");
-let inpEditPhoto = document.getElementById("inp-edit-photo");
+function addToList(item) {
+  let newRecordDiv = document.createElement("div");
+  newRecordDiv.classList.add("record-item");
+  newRecordDiv.innerHTML = `
+    <div class="record-el">
+    <span class="labelling">Name: </span>
+    <span id="name">${item.name}</span>
+  </div>
 
-modalEditClose.addEventListener("click", function () {
-  modalEdit.style.display = "none";
+  <div class="record-el">
+    <span class="labelling">Treaty: </span>
+    <span id="treaty">${item.treaty}</span>
+  </div>
+
+  <div class="record-el">
+    <span class="labelling">Number: </span>
+    <span id="num">${item.number}</span>
+  </div>
+  <div class="record-el">
+  <span class="labelling">Amount: </span>
+  <span id="amount">${item.amount}</span>
+</div>
+
+  <button type="button" id="edit-btn">
+    <span>
+      <i class="fas fa-edit"></i>
+    </span>
+    Edit
+  </button>
+
+  <button type="button" id="delete-btn">
+    <span>
+      <i class="fas fa-trash"></i>
+    </span>
+    Delete
+  </button>`;
+  recordContainer.appendChild(newRecordDiv);
+}
+
+//! Deletion of record
+recordContainer.addEventListener("click", function (event) {
+  //   console.log(event.target);
+  if (event.target.id === "delete-btn") {
+    let recordItem = event.target.parentElement;
+    recordContainer.removeChild(recordItem);
+    let tempContactList = ContactArray.filter(function (record) {
+      return (
+        record.id !==
+        parseInt(recordItem.firstElementChild.lastElementChild.textContect)
+      );
+    });
+    ContactArray = tempContactList;
+    localStorage.setItem("contacts", JSON.stringify(ContactArray));
+  }
 });
 
-btnSaveEdit.addEventListener("click", async () => {
-  let editedPerson = {
-    name: inpEditname.value,
-    surname: inpEditSurname.value,
-    num: inpEditNum.value,
-    photo: inpEditPhoto.value,
-  };
-  let id = inpEditname.className;
-  await fetch(`${API}/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify(editedPerson),
-    headers: {
-      "Content-type": "application/json; charset=utf-8",
-    },
+//! click on reset
+resetBtn.addEventListener("click", function () {
+  ContactArray = [];
+  localStorage.setItem("contacts", JSON.stringify(ContactArray));
+  location.reload();
+});
+
+function setMessage(status, message) {
+  let messageBox = document.querySelector(".message");
+  if (status == "error") {
+    messageBox.innerHTML = `${message}`;
+    messageBox.classList.add("error");
+    removeMessage(status, messageBox);
+  }
+  if (status == "success") {
+    messageBox.innerHTML = `${message}`;
+    messageBox.classList.add("success");
+    removeMessage(status, messageBox);
+  }
+}
+
+//! clear all input's fields
+cancelBtn.addEventListener("click", function () {
+  clearInputFields();
+});
+
+function clearInputFields() {
+  amount.value = "";
+  name.value = "";
+  treaty.value = "";
+  number.value = "";
+}
+
+//! remove status/alerts
+function removeMessage(status, messageBox) {
+  setTimeout(function () {
+    messageBox.classList.remove(`${status}`);
+  }, 1500);
+}
+
+//! input field check
+function checkInputFields(inputArr) {
+  for (let i = 0; i < inputArr.length; i++) {
+    if (inputArr[i].value === "") {
+      return false;
+    }
+  }
+  if (!phoneNumCheck(inputArr[2].value)) {
+    return false;
+  }
+  return true;
+}
+
+function phoneNumCheck(inputtxt) {
+  let phoneNo = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  if (inputtxt.match(phoneNo)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function createElement() {
+  let newData = JSON.parse(localStorage.getItem("contacts"));
+  recordContainer.innerHTML = "";
+  newData.forEach((item, index) => {
+    let li = document.createElement("li");
+    li.innerText = item.data;
+
+    li.append(editBtn);
+
+    editBtn.addEventListener("click", () => {
+      editElement(index);
+      mainModal.style.display = "block";
+    });
+
+    recordContainer.append(li);
   });
-  modalEdit.style.display = "none";
-  getPerson();
+}
+
+function editElement(index) {
+  let data = JSON.parse(localStorage.getItem("contacts"));
+  inpEdit.setAttribute("id", index);
+  inpEdit.value = data[index].id;
+}
+
+btnClose.addEventListener("click", () => {
+  mainModal.style.display = "none";
+});
+
+btnSave.addEventListener("click", () => {
+  let data = JSON.parse(localStorage.getItem("contacts"));
+  let index = inpEdit.id;
+  if (!inpEdit.value.trim()) {
+    alert("Make changes to the field!");
+    return;
+  }
+  let newContact = { ContactArray: inpEdit.value };
+  data.splice(index, 1, newContact);
+  localStorage.setItem("contacts", JSON.stringify(data));
+  mainModal.style.display = "none";
 });
