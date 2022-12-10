@@ -1,149 +1,131 @@
-let addBtn = document.getElementById("submit-btn");
-let cancelBtn = document.getElementById("cancel-btn");
-let resetBtn = document.getElementById("reset-btn");
-let editBtn = document.getElementById("edit-btn");
-let deleteBtn = document.getElementById("delete-btn");
-let recordContainer = document.querySelector(".record-container");
-let mainModal = document.querySelector(".main-modal");
-let inpEdit = document.querySelector(".inp-edit");
-let btnSave = document.querySelector(".btn-save");
-let btnClose = document.querySelector(".btn-close");
+let API = "http://localhost:8000/data";
+
+let addBtn = document.querySelector("#submit-btn");
+(cancelBtn = document.querySelector("#cancel-btn")),
+  (resetBtn = document.querySelector("#reset-btn")),
+  (editBtn = document.querySelector("#btn-edit")),
+  (deleteBtn = document.querySelector("#delete-btn"));
+
+let recordContainer = document.querySelector(".record-container"),
+  mainModal = document.querySelector(".main-modal"),
+  inpEdit = document.querySelector(".inp-edit"),
+  btnSave = document.querySelector(".btn-save"),
+  btnClose = document.querySelector(".btn-close");
+
 //! inputs
-
 let name = document.getElementById("name");
-let treaty = document.getElementById("treaty");
-let number = document.getElementById("contact-num");
-let amount = document.getElementById("amount");
+(photo = document.getElementById("photo")),
+  (treaty = document.getElementById("treaty")),
+  (num = document.getElementById("num"));
 
-let ContactArray = [];
-let id = 0;
+//! edit inputs
+let editName = document.querySelector("#edit-name"),
+  editPhoto = document.querySelector("#edit-photo"),
+  editTreaty = document.querySelector("#edit-treaty"),
+  editNum = document.querySelector("#edit-num"),
+  saveChange = document.querySelector("#save-change"),
+  exampleModal = document.querySelector("#exampleModal");
 
-//! constructor for contact
+//!search
+let inpSearch = document.querySelector("#search");
+let searchVal = "";
 
-function Contact(name, treaty, number, amount) {
-  this.name = name;
-  this.treaty = treaty;
-  this.number = number;
-  this.amount = amount;
-}
+//! paginate
+let currentPage = 1;
+let pageTotalCount = 1;
+let paginationList = document.querySelector(".pagination-list");
+let prev = document.querySelector(".prev");
+let next = document.querySelector(".next");
 
-//! display record
+//! put info to database
+addBtn.addEventListener("click", async function () {
+  let obj = {
+    name: name.value,
+    photo: photo.value,
+    treaty: treaty.value,
+    num: num.value,
+  };
 
-document.addEventListener("DOMContentLoaded", function () {
-  if (localStorage.getItem("contacts") == null) {
-    ContactArray = [];
-  } else {
-    ContactArray = JSON.parse(localStorage.getItem("contacts"));
-    lastID(ContactArray);
-  }
-  displayRecord();
-});
-
-function lastID(ContactArray) {
-  if (ContactArray.length > 0) {
-    id = ContactArray[ContactArray.length - 1].id;
-  } else {
-    id = 0;
-  }
-}
-
-//! Display function
-
-function displayRecord() {
-  ContactArray.forEach(function (singleContact) {
-    addToList(singleContact);
-  });
-}
-
-//! Finding the last id
-
-//! add contact record
-
-addBtn.addEventListener("click", function () {
   if (
-    [
-      !name.value.trim() ||
-        !treaty.value.trim() ||
-        !number.value.trim() ||
-        !amount.value.trim,
-    ]
+    !obj.name.trim() ||
+    !obj.photo.trim() ||
+    !obj.treaty.trim() ||
+    !obj.num.trim()
   ) {
-    setMessage("success", "Record added successfully!");
-    id++;
-    const contact = new Contact(
-      id,
-      name.value,
-      treaty.value,
-      number.value,
-      amount.value
-    );
-    ContactArray.push(contact);
-
-    addToList(contact);
-  } else {
-    setMessage("error", "Empty input fields or invalid input!");
+    alert`Поле не должно быть пустым`;
+    return;
   }
+  if (!obj.treaty || +obj.name || +obj.photo || !+obj.num) {
+    alert`Заполните поля правильно`;
+    return;
+  }
+
+  fetch(API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(obj),
+  });
+  name.value = "";
+  photo.value = "";
+  treaty.value = "";
+  num.value = "";
+  infoFunc();
 });
 
-//! Add to list
+//! displaying data on a browser page
+infoFunc();
+async function infoFunc() {
+  let info = await fetch(`${API}?q=${searchVal}&_page=${currentPage}&_limit=3`)
+    .then((result) => result.json())
+    .catch((error) => console.log(error));
+  drawPaginationButtons();
+  recordContainer.innerHTML = "";
+  info.forEach((item) => {
+    let newInfo = document.createElement("div");
+    newInfo.id = item.id;
 
-function addToList(item) {
-  let newRecordDiv = document.createElement("div");
-  newRecordDiv.classList.add("record-item");
-  newRecordDiv.innerHTML = `
+    newInfo.innerHTML = `
     <div class="record-el">
     <span class="labelling">Name: </span>
     <span id="name">${item.name}</span>
   </div>
 
   <div class="record-el">
-    <span class="labelling">Treaty: </span>
-    <span id="treaty">${item.treaty}</span>
+    <span class="labelling">Photo: </span>
+   
+    <img  class ="photo" src=${item.photo} alt="...">
   </div>
 
   <div class="record-el">
-    <span class="labelling">Number: </span>
-    <span id="num">${item.number}</span>
+    <span class="labelling">Treaty: </span>
+    <img  class ="photo"  src=${item.treaty} alt="...">
   </div>
   <div class="record-el">
-  <span class="labelling">Amount: </span>
-  <span id="amount">${item.amount}</span>
+  <span class="labelling">Phone: </span>
+  <span id="num">${item.num}</span>
 </div>
 
-  <button type="button" id="edit-btn">
+  <button type="button" data-bs-target="#exampleModal" data-bs-toggle="modal" class ="btn-edit" id=${item.id}>Edit
     <span>
       <i class="fas fa-edit"></i>
+     
     </span>
-    Edit
+    
   </button>
-
-  <button type="button" id="delete-btn">
+  
+  <button type="button" class="btn-delete" id=${item.id} >
     <span>
       <i class="fas fa-trash"></i>
     </span>
     Delete
   </button>`;
-  recordContainer.appendChild(newRecordDiv);
+    recordContainer.append(newInfo);
+  });
 }
 
-//! Deletion of record
-recordContainer.addEventListener("click", function (event) {
-  //   console.log(event.target);
-  if (event.target.id === "delete-btn") {
-    let recordItem = event.target.parentElement;
-    recordContainer.removeChild(recordItem);
-    let tempContactList = ContactArray.filter(function (record) {
-      return (
-        record.id !==
-        parseInt(recordItem.firstElementChild.lastElementChild.textContect)
-      );
-    });
-    ContactArray = tempContactList;
-    localStorage.setItem("contacts", JSON.stringify(ContactArray));
-  }
-});
-
-//! click on reset
+// //! click on reset
 resetBtn.addEventListener("click", function () {
   ContactArray = [];
   localStorage.setItem("contacts", JSON.stringify(ContactArray));
@@ -164,83 +146,147 @@ function setMessage(status, message) {
   }
 }
 
-//! clear all input's fields
+// //! clear all input's fields
 cancelBtn.addEventListener("click", function () {
   clearInputFields();
 });
 
 function clearInputFields() {
-  amount.value = "";
   name.value = "";
+  photo.value = "";
   treaty.value = "";
-  number.value = "";
+  num.value = "";
 }
 
-//! remove status/alerts
-function removeMessage(status, messageBox) {
-  setTimeout(function () {
-    messageBox.classList.remove(`${status}`);
-  }, 1500);
-}
-
-//! input field check
-function checkInputFields(inputArr) {
-  for (let i = 0; i < inputArr.length; i++) {
-    if (inputArr[i].value === "") {
-      return false;
-    }
-  }
-  if (!phoneNumCheck(inputArr[2].value)) {
-    return false;
-  }
-  return true;
-}
-
-function phoneNumCheck(inputtxt) {
-  let phoneNo = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if (inputtxt.match(phoneNo)) {
-    return true;
-  } else {
-    return false;
-  }
-}
-function createElement() {
-  let newData = JSON.parse(localStorage.getItem("contacts"));
-  recordContainer.innerHTML = "";
-  newData.forEach((item, index) => {
-    let li = document.createElement("li");
-    li.innerText = item.data;
-
-    li.append(editBtn);
-
-    editBtn.addEventListener("click", () => {
-      editElement(index);
-      mainModal.style.display = "block";
+//!delete data
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn-delete")) {
+    let id = e.target.id;
+    fetch(`${API}/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      recordContainer.innerHTML = "";
+      infoFunc();
     });
-
-    recordContainer.append(li);
-  });
-}
-
-function editElement(index) {
-  let data = JSON.parse(localStorage.getItem("contacts"));
-  inpEdit.setAttribute("id", index);
-  inpEdit.value = data[index].id;
-}
-
-btnClose.addEventListener("click", () => {
-  mainModal.style.display = "none";
+  }
 });
 
-btnSave.addEventListener("click", () => {
-  let data = JSON.parse(localStorage.getItem("contacts"));
-  let index = inpEdit.id;
-  if (!inpEdit.value.trim()) {
-    alert("Make changes to the field!");
+//! edit data
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("btn-edit")) {
+    let id = e.target.id;
+    console.log("clicked");
+    fetch(`${API}/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        editName.value = data.name;
+        editPhoto.value = data.photo;
+        editTreaty.value = data.treaty;
+        editNum.value = data.num;
+
+        saveChange.setAttribute("id", data.id);
+      });
+  }
+});
+
+saveChange.addEventListener("click", function () {
+  let id = this.id;
+  let name = editName.value,
+    photo = editPhoto.value,
+    phoneTreaty = editTreaty.value,
+    num = editNum.value;
+
+  if (!name || !photo || !phoneTreaty || !num) return;
+  if (+phoneTreaty || +name || +photo || !+num) {
+    alert`Поля должны быть заполнены корректно`;
     return;
   }
-  let newContact = { ContactArray: inpEdit.value };
-  data.splice(index, 1, newContact);
-  localStorage.setItem("contacts", JSON.stringify(data));
-  mainModal.style.display = "none";
+
+  let editedInfo = {
+    name: name,
+    photo: photo,
+    phoneTreaty: phoneTreaty,
+    num: num,
+  };
+  saveEdit(editedInfo, id);
+});
+
+async function saveEdit(editedInfo, id) {
+  await fetch(`${API}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(editedInfo),
+  });
+  infoFunc();
+  let modal = bootstrap.Modal.getInstance(exampleModal);
+  modal.hide();
+}
+
+//!search
+inpSearch.addEventListener("input", () => {
+  searchVal = inpSearch.value;
+  infoFunc();
+});
+
+inpSearch.addEventListener("input", (e) => {
+  searchVal = e.target.value;
+  infoFunc();
+});
+
+//! pagination
+function drawPaginationButtons() {
+  fetch(`${API}?q=${searchVal}`)
+    .then((res) => res.json())
+    .then((data) => {
+      pageTotalCount = Math.ceil(data.length / 3);                   // pageTotalCount = кол-во страниц
+
+      paginationList.innerHTML = "";
+      for (let i = 1; i <= pageTotalCount; i++) {
+        if (currentPage == i) {
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item active"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
+        } else {
+          let page1 = document.createElement("li");
+          page1.innerHTML = `<li class="page-item"><a class="page-link page_number" href="#">${i}</a></li>`;
+          paginationList.append(page1);
+        }
+      }
+
+      if (currentPage == 1) {
+        prev.classList.add("disabled");
+      } else {
+        prev.classList.remove("disabled");
+      }
+      if (currentPage == pageTotalCount) {
+        next.classList.add("disabled");
+      } else {
+        next.classList.remove("disabled");
+      }
+    });
+}
+
+prev.addEventListener("click", () => {
+  if (currentPage <= 1) {
+    return;
+  }
+  currentPage--;
+  infoFunc();
+});
+
+next.addEventListener("click", () => {
+  if (currentPage >= pageTotalCount) {
+    return;
+  }
+  currentPage++;
+  infoFunc();
+});
+
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("page_number")) {
+    currentPage = e.target.innerText;
+    infoFunc();
+  }
 });
